@@ -1,4 +1,4 @@
-package me.harshithgoka.youtubedl.YoutubeDL.Utils
+package me.harshithgoka.youtubedl.lib.Utils
 
 import org.json.JSONArray
 import org.json.JSONException

@@ -1,9 +1,8 @@
-package me.harshithgoka.youtubedl.YoutubeDL
+package me.harshithgoka.youtubedl.lib
 
 import java.io.IOException
 
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.OkHttpClient
 
 class HttpGetter {

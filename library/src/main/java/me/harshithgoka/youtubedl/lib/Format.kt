@@ -1,25 +1,6 @@
-package me.harshithgoka.youtubedl.YoutubeDL
+package me.harshithgoka.youtubedl.lib
 
-import android.app.DownloadManager
-import android.content.Context
-import android.content.SharedPreferences
-import android.database.Cursor
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.Log
-import android.widget.Toast
-
-import com.google.gson.Gson
-
-import java.io.File
-import java.util.HashSet
-
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.FormatUtils
+import me.harshithgoka.youtubedl.lib.Utils.FormatUtils
 
 /**
  * Created by harshithgoka on 12/16/2017 AD.

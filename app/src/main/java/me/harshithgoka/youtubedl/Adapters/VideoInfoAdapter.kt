@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import me.harshithgoka.youtubedl.Activities.MainActivity
 import me.harshithgoka.youtubedl.R
-import me.harshithgoka.youtubedl.YoutubeDL.VideoInfo
+import me.harshithgoka.youtubedl.lib.VideoInfo
 
 class VideoInfoAdapter(internal var context: Context, internal var videoInfos: List<VideoInfo>?) : RecyclerView.Adapter<VideoInfoAdapter.VideoInfoViewHolder>() {
 

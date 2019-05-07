@@ -1,4 +1,4 @@
-package me.harshithgoka.youtubedl.YoutubeDL;
+package me.harshithgoka.youtubedl.lib;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.Arg;
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.Fun;
+import me.harshithgoka.youtubedl.lib.Utils.Arg;
+import me.harshithgoka.youtubedl.lib.Utils.Fun;
 
-import static me.harshithgoka.youtubedl.YoutubeDL.Utils.Arg.VAL;
+import static me.harshithgoka.youtubedl.lib.Utils.Arg.VAL;
 
 public class Extractor {
 

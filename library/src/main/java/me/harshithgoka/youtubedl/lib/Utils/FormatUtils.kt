@@ -1,11 +1,11 @@
-package me.harshithgoka.youtubedl.YoutubeDL.Utils
+package me.harshithgoka.youtubedl.lib.Utils
 
 import org.json.JSONException
 import org.json.JSONObject
 
 import java.util.Locale
 
-import me.harshithgoka.youtubedl.YoutubeDL.Format
+import me.harshithgoka.youtubedl.lib.Format
 
 /**
  * Created by harshithg on 22/1/18.

@@ -1,4 +1,4 @@
-package me.harshithgoka.youtubedl.YoutubeDL
+package me.harshithgoka.youtubedl.lib
 
 import java.sql.Timestamp
 import java.util.ArrayList

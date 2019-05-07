@@ -7,8 +7,8 @@ import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import me.harshithgoka.youtubedl.Activities.MainActivity
 import me.harshithgoka.youtubedl.R
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.FormatUtils
-import me.harshithgoka.youtubedl.YoutubeDL.Format
+import me.harshithgoka.youtubedl.lib.Utils.FormatUtils
+import me.harshithgoka.youtubedl.lib.Format
 
 import android.view.LayoutInflater
 import android.view.View

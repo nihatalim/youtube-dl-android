@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -24,15 +23,11 @@ import android.os.Environment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.util.LongSparseArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.ValueCallback;
-import android.webkit.WebSettings;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,21 +43,20 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import androidx.core.util.Pair;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import me.harshithgoka.youtubedl.YoutubeDL.Extractor;
-import me.harshithgoka.youtubedl.YoutubeDL.Format;
+import me.harshithgoka.youtubedl.lib.Format;
 import me.harshithgoka.youtubedl.Adapters.FormatAdapter;
 import me.harshithgoka.youtubedl.R;
 import me.harshithgoka.youtubedl.CustomUI.RecyclerViewEmptySupport;
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.FormatUtils;
-import me.harshithgoka.youtubedl.YoutubeDL.VideoInfo;
+import me.harshithgoka.youtubedl.lib.Utils.FormatUtils;
+import me.harshithgoka.youtubedl.lib.VideoInfo;
 import me.harshithgoka.youtubedl.Adapters.VideoInfoAdapter;
-
+import me.harshithgoka.youtubedl.lib.service.Downloader;
+import me.harshithgoka.youtubedl.lib.service.DownloaderCallback;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MaterialButton btnCopy;
 
     List<Format> formats;
-
-    Extractor extractor;
 
     Pattern youtubeUrlPattern;
 
@@ -171,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressBars.add((ProgressBar) findViewById(R.id.progressBar2));
 
         formats = new ArrayList<>();
-        extractor = new Extractor();
-
-        youtubeUrlPattern = Pattern.compile(extractor._VALID_URL);
 
         // Formats Holder Bottom Sheet
         bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
@@ -353,9 +342,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Invalid Youtube URL", Toast.LENGTH_SHORT).show();
             return;
         }
+        showLoading();
 
-        AsyncTask<String, Void, VideoInfo> asyncTask = new YoutubeDLAsyncTask(getApplicationContext(), extractor);
-        asyncTask.execute(url);
+        new Downloader(url, new DownloaderCallback() {
+            @Override
+            public void run(VideoInfo videoInfo, Downloader.ProcessInfo processInfo) {
+                hideLoading();
+                if (videoInfo != null) {
+
+                    List<Format> formats = videoInfo.getFormats();
+
+                    if (formats.size() > 0) {
+                        int index;
+                        if ((index = history.indexOf(videoInfo)) != -1) {
+                            history.remove(index);
+                            history.add(0, videoInfo);
+                            viAdapter.notifyItemMoved(index, 0);
+                        }
+                        else {
+                            history.add(0, videoInfo);
+                            viAdapter.notifyItemInserted(0);
+                        }
+                        loadVideoInfo(videoInfo);
+
+                        String finalurl = formats.get(0).getUrl();
+                        println(finalurl);
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        assert clipboard != null;
+                        ClipData clip = ClipData.newRawUri("DownloadURL", Uri.parse(finalurl));
+                        clipboard.setPrimaryClip(clip);
+
+                        Toast.makeText(getApplicationContext(), String.format("Best quality link (%s) copied to Clipboard", formats.get(0).getQuality()), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        println("No. of formats: 0");
+                        Toast.makeText(getApplicationContext(), "Not yet implemented encrypted signature", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    println("Error connecting to the Internet");
+                }
+            }
+        }).execute();
     }
 
     public void startPoint(View button) {
@@ -412,69 +441,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-    class YoutubeDLAsyncTask extends AsyncTask<String, Void, VideoInfo> {
-        Context context;
-        Extractor ytextractor;
-
-        public YoutubeDLAsyncTask(Context context, Extractor extractor) {
-            this.context = context;
-            ytextractor = extractor;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected VideoInfo doInBackground(String... strings) {
-            String you_url = strings[0];
-            return ytextractor.getFormats(you_url);
-        }
-
-        @Override
-        protected void onPostExecute(VideoInfo videoInfo) {
-            hideLoading();
-            if (videoInfo != null) {
-
-                List<Format> formats = videoInfo.getFormats();
-
-                if (formats.size() > 0) {
-                    int index;
-                    if ((index = history.indexOf(videoInfo)) != -1) {
-                        history.remove(index);
-                        history.add(0, videoInfo);
-                        viAdapter.notifyItemMoved(index, 0);
-                    }
-                    else {
-                        history.add(0, videoInfo);
-                        viAdapter.notifyItemInserted(0);
-                    }
-                    loadVideoInfo(videoInfo);
-
-                    String finalurl = formats.get(0).getUrl();
-                    println(finalurl);
-
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    assert clipboard != null;
-                    ClipData clip = ClipData.newRawUri("DownloadURL", Uri.parse(finalurl));
-                    clipboard.setPrimaryClip(clip);
-
-                    Toast.makeText(getApplicationContext(), String.format("Best quality link (%s) copied to Clipboard", formats.get(0).getQuality()), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    println("No. of formats: 0");
-                    Toast.makeText(getApplicationContext(), "Not yet implemented encrypted signature", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else {
-                println("Error connecting to the Internet");
-            }
-        }
-    };
-
 
     public String getDownloadDirectory(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

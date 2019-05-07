@@ -1,4 +1,4 @@
-package me.harshithgoka.youtubedl.YoutubeDL;
+package me.harshithgoka.youtubedl.lib;
 
 import android.util.Log;
 import android.util.Pair;
@@ -18,11 +18,11 @@ import java.util.regex.Pattern;
 import com.google.code.regexp.Matcher;
 import com.google.code.regexp.Pattern;
 
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.Arg;
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.Fun;
-import me.harshithgoka.youtubedl.YoutubeDL.Utils.FormatUtils;
+import me.harshithgoka.youtubedl.lib.Utils.Arg;
+import me.harshithgoka.youtubedl.lib.Utils.Fun;
+import me.harshithgoka.youtubedl.lib.Utils.FormatUtils;
 
-import static me.harshithgoka.youtubedl.YoutubeDL.Utils.Arg.VAL;
+import static me.harshithgoka.youtubedl.lib.Utils.Arg.VAL;
 
 /**
  * Created by harshithg on 16/1/18.

@@ -1,4 +1,4 @@
-package me.harshithgoka.youtubedl.YoutubeDL.Utils
+package me.harshithgoka.youtubedl.lib.Utils
 
 /**
  * Created by harshithg on 17/1/18.

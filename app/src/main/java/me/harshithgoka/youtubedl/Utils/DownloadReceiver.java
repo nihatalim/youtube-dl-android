@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.core.util.Pair;
-import me.harshithgoka.youtubedl.YoutubeDL.Format;
-import me.harshithgoka.youtubedl.YoutubeDL.VideoInfo;
+import me.harshithgoka.youtubedl.lib.Format;
+import me.harshithgoka.youtubedl.lib.VideoInfo;
 
 public class DownloadReceiver extends BroadcastReceiver {
     @Override
