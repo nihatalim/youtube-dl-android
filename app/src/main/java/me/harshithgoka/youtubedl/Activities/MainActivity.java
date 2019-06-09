@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     List<Format> formats;
 
-    Pattern youtubeUrlPattern;
-
     RecyclerViewEmptySupport formatsRecyclerView;
     FormatAdapter formatAdapter;
     LinearLayoutManager formatLinearLayoutManager;
@@ -331,17 +329,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startDownload(String url) {
-        url = preprocess(url);
-
-        java.util.regex.Matcher m = youtubeUrlPattern.matcher(url);
-        println("Url: " + url);
-
-        urlEdit.setText(url);
-
-        if (!m.find()) {
-            Toast.makeText(this, "Invalid Youtube URL", Toast.LENGTH_SHORT).show();
-            return;
-        }
         showLoading();
 
         new Downloader(url, new DownloaderCallback() {
